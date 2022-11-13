@@ -1,7 +1,7 @@
-import type { Component } from 'solid-js';
-import { A, Route, Routes } from '@solidjs/router';
-import Home from './views/Home';
-import Test from './views/Test';
+import type { Component } from 'solid-js'
+import { A, Route, Routes } from '@solidjs/router'
+import Home from './views/Home'
+import Test from './views/Test'
 
 const App: Component = () => {
   return (
@@ -15,7 +15,7 @@ const App: Component = () => {
         <Route path='/test' element={Test} />
       </Routes>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
