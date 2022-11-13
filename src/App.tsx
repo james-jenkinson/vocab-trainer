@@ -2,6 +2,9 @@ import type { Component } from 'solid-js';
 
 import logo from './logo.svg';
 import styles from './App.module.css';
+import { A, Route, Routes } from '@solidjs/router';
+import Home from './views/Home';
+import Test from './views/Test';
 
 const App: Component = () => {
   return (
@@ -19,7 +22,14 @@ const App: Component = () => {
         >
           Learn Solid
         </a>
+        <A href='/'>Home</A>
+        <A href='/test'>Test</A>
       </header>
+      <Routes>
+        <Route path='/' element={Home} />
+        <Route path='/test' element={Test} />
+      </Routes>
+      test
     </div>
   );
 };
