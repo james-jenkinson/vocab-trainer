@@ -3,6 +3,7 @@ button {
 	cursor: pointer;
 	font-size: 1rem;
   color: var(--color-button-text);
+	text-decoration: none;
 }
 
 .button {
