@@ -4,6 +4,7 @@ import Home from './views/Home'
 import CreateDeck from './views/CreateDeck'
 import DeckView from './views/DeckView'
 import AddWord from './views/AddWord'
+import Settings from './views/Settings'
 import './App.css'
 
 const App: Component = () => {
@@ -28,7 +29,10 @@ const App: Component = () => {
   return (
     <div>
       <header>
-        <A href='/'>Home</A>
+        <nav>
+          <A href='/'>Home</A>
+          <A href='/settings'>Settings</A>
+        </nav>
         <button class='color-mode-switcher' onClick={onColorSchemeSwitch}>
           {prefersLightMode() ? 'Dark mode' : 'Light mode'}
         </button>
@@ -36,6 +40,7 @@ const App: Component = () => {
       <div class="outlet">
         <Routes>
           <Route path='/' element={Home} />
+          <Route path='/settings' element={Settings} />
           <Route path='/deck/:id' element={DeckView} />
           <Route path='/deck/:id/add-word' element={AddWord} />
           <Route path='/create-deck' element={CreateDeck} />

@@ -1,11 +1,10 @@
-import { useParams, useNavigate } from '@solidjs/router'
+import { useParams } from '@solidjs/router'
 import { JSX } from 'solid-js'
 import { db } from '../database/db'
 
 const AddWord = (): JSX.Element => {
   let word!: HTMLInputElement
   const { id: deckId } = useParams()
-  const navigate = useNavigate()
 
   const onSubmit = (event: Event): void => {
     event.preventDefault()
@@ -14,7 +13,7 @@ const AddWord = (): JSX.Element => {
       word: word.value,
       deckId: parseInt(deckId, 10)
     }).then(() => {
-      navigate(`/deck/${deckId}`)
+      word.value = ''
     }).catch(console.error)
   }
 
