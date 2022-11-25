@@ -1,0 +1,21 @@
+.deck-list {
+	gap: 8px;
+	display: flex;
+	flex-direction: column;
+}
+
+.deck-card {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	border-radius: 4px;
+	height: 60px;
+
+	border: solid 1px var(--color-deck-card-border);
+	background-color: var(--color-button-background);
+}
+
+.create-button {
+	width: 100%;
+}

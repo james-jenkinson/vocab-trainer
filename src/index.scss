@@ -1,4 +1,6 @@
 @import './assets/styles/colors.scss';
+@import './assets/styles/buttons.css';
+@import './assets/styles/lists.css';
 
 body {
   margin: 0;
@@ -12,16 +14,4 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   transition: background-color 0.3s, color 0.3s;
-}
-
-a {
-  color: var(--color-text);
-}
-
-button {
-  height: 48px;
-  font-size: 1.1rem;
-	cursor: pointer;
-  border-radius: 8px;
-  border: solid 1px var(--color-button-border)
 }

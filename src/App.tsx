@@ -1,16 +1,11 @@
 import { Component } from 'solid-js'
 import { A, Route, Routes } from '@solidjs/router'
 import Home from './views/Home'
-import Test from './views/Test'
-import { db } from './database/db'
 import CreateDeck from './views/CreateDeck'
 import './App.css'
+import Deck from './views/Deck'
 
 const App: Component = () => {
-  const onClick = (): void => {
-    db.decks.add({ name: 'Default' }).catch(console.error)
-  }
-
   const userPrefersLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
   const colorModeText = userPrefersLightMode ? 'Dark mode' : 'Light mode'
 
@@ -29,15 +24,15 @@ const App: Component = () => {
     <div>
       <header>
         <A href='/'>Home</A>
-        <A href='/test'>Test</A>
         <button class='color-mode-switcher' onClick={onColorSchemeSwitch}>{colorModeText}</button>
       </header>
-      <Routes>
-        <Route path='/' element={Home} />
-        <Route path='/test' element={Test} />
-        <Route path='/create-deck' element={CreateDeck} />
-      </Routes>
-      <button onClick={() => onClick()}>Create default deck</button>
+      <div class="outlet">
+        <Routes>
+          <Route path='/' element={Home} />
+          <Route path='/deck/:id' element={Deck} />
+          <Route path='/create-deck' element={CreateDeck} />
+        </Routes>
+      </div>
     </div>
   )
 }

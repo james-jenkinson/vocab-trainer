@@ -5,3 +5,13 @@ button.color-mode-switcher {
 	padding: 0;
 	height: fit-content;
 }
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.outlet {
+	padding: 16px;
+}

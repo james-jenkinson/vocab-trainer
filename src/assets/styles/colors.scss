@@ -3,13 +3,21 @@
 	--color-text: #000000;
 
 	--color-button-border: #282727;
+	--color-button-background: #ffffff;
+	--color-button-text: var(--color-text);
+
+	--color-deck-card-border: var(--color-button-border);
 }
 
 @mixin dark-mode {
 	--color-background: #2c2c2c;	
 	--color-text: #ffffff;
 
-	--color-button-border: #1794e1;
+	--color-button-border: #b1e0fe;
+	--color-button-background: #241f1fea;
+	--color-button-text: var(--color-text);
+
+	--color-deck-card-border: #565656;
 }
 
 @media (prefers-color-scheme: dark) {
