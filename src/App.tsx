@@ -1,4 +1,4 @@
-import { Component } from 'solid-js'
+import { Component, createSignal } from 'solid-js'
 import { A, Route, Routes } from '@solidjs/router'
 import Home from './views/Home'
 import CreateDeck from './views/CreateDeck'
@@ -8,10 +8,14 @@ import './App.css'
 
 const App: Component = () => {
   const userPrefersLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
-  const colorModeText = userPrefersLightMode ? 'Dark mode' : 'Light mode'
+  const [prefersLightMode, setPrefersLightMode] = createSignal(userPrefersLightMode)
+
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (value) => {
+    setPrefersLightMode(value.matches)
+  })
 
   const onColorSchemeSwitch = (): void => {
-    const className = userPrefersLightMode ? 'dark-mode' : 'light-mode'
+    const className = prefersLightMode() ? 'dark-mode' : 'light-mode'
     const classAlreadyPresent = document.documentElement.classList.contains(className)
 
     if (classAlreadyPresent) {
@@ -25,7 +29,9 @@ const App: Component = () => {
     <div>
       <header>
         <A href='/'>Home</A>
-        <button class='color-mode-switcher' onClick={onColorSchemeSwitch}>{colorModeText}</button>
+        <button class='color-mode-switcher' onClick={onColorSchemeSwitch}>
+          {prefersLightMode() ? 'Dark mode' : 'Light mode'}
+        </button>
       </header>
       <div class="outlet">
         <Routes>
