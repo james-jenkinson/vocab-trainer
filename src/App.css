@@ -1,0 +1,7 @@
+button.color-mode-switcher {
+	background: transparent;
+	color: var(--color-text);
+	border: none;
+	padding: 0;
+	height: fit-content;
+}

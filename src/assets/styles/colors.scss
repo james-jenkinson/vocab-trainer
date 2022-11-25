@@ -1,0 +1,33 @@
+@mixin light-mode {
+	--color-background: #ffffff;
+	--color-text: #000000;
+
+	--color-button-border: #282727;
+}
+
+@mixin dark-mode {
+	--color-background: #2c2c2c;	
+	--color-text: #ffffff;
+
+	--color-button-border: #1794e1;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		@include dark-mode;
+	}
+}
+
+@media (prefers-color-schema: light) {
+	:root {
+		@include light-mode;
+	}
+}
+
+:root.dark-mode {
+	@include dark-mode;
+}
+
+:root.light-mode {
+	@include light-mode;
+}

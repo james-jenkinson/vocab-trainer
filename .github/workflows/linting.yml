@@ -1,0 +1,17 @@
+name: 'Linting'
+on:
+  push:
+
+jobs:
+  Linting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run linter
+        run: npm run lint
