@@ -2,8 +2,9 @@ import { Component } from 'solid-js'
 import { A, Route, Routes } from '@solidjs/router'
 import Home from './views/Home'
 import CreateDeck from './views/CreateDeck'
+import DeckView from './views/DeckView'
+import AddWord from './views/AddWord'
 import './App.css'
-import Deck from './views/Deck'
 
 const App: Component = () => {
   const userPrefersLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
@@ -29,7 +30,8 @@ const App: Component = () => {
       <div class="outlet">
         <Routes>
           <Route path='/' element={Home} />
-          <Route path='/deck/:id' element={Deck} />
+          <Route path='/deck/:id' element={DeckView} />
+          <Route path='/deck/:id/add-word' element={AddWord} />
           <Route path='/create-deck' element={CreateDeck} />
         </Routes>
       </div>

@@ -13,4 +13,5 @@ button {
   border: solid 1px var(--color-button-border);
 	background-color: var(--color-button-background);
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	text-align: center;
 }

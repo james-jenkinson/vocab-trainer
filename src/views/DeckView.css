@@ -1,0 +1,11 @@
+.deck-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 8px
+}
+
+.deck-actions a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
