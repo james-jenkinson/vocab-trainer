@@ -10,6 +10,7 @@ const Settings = (): JSX.Element => {
   }
 
   const register = useRegisterSW()
+  console.log('register', register)
 
   return (
     <main>

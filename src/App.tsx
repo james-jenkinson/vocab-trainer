@@ -13,6 +13,7 @@ const App: Component = () => {
   const [prefersLightMode, setPrefersLightMode] = createSignal(userPrefersLightMode)
 
   window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (value) => {
+    document.documentElement.removeAttribute('class')
     setPrefersLightMode(value.matches)
   })
 
