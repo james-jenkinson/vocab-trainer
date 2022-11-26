@@ -30,3 +30,11 @@ a.button {
 .button.narrow {
 	width: fit-content;
 }
+
+.button.failure {
+	background-color: var(--color-button-background-failure);
+}
+
+.button.success {
+	background-color: var(--color-button-background-success);
+}

@@ -3,6 +3,7 @@ import { isBefore, addDays } from 'date-fns'
 import { createSignal, JSX, Show } from 'solid-js'
 import { db, Word } from '../database/db'
 import { query } from '../database/query'
+import './StudyDeck.css'
 
 const StudyDeck = (): JSX.Element => {
   const { id } = useParams()
@@ -82,12 +83,14 @@ const StudyDeck = (): JSX.Element => {
       <h1>Study {deck()?.name}</h1>
       <Show when={currentWord()}>
         <div class="card">{currentWord()?.word}</div>
-        <button class="button" onClick={onRemembered}>
-          Remembered
-        </button>
-        <button class="button" onClick={onForgotten}>
-          Forgotton
-        </button>
+        <div class="actions">
+          <button class="button failure" onClick={onForgotten}>
+            Forgotton
+          </button>
+          <button class="button success" onClick={onRemembered}>
+            Remembered
+          </button>
+        </div>
       </Show>
       <Show when={currentWord() == null && hasWords(wordsToRevise())}>
         <p>Finished</p>

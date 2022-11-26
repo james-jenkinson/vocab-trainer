@@ -21,7 +21,7 @@ const DeckView = (): JSX.Element => {
         <A class="button" href={`/deck/${id}/add-word`}>
           Add word
         </A>
-        <A class="button" href={`/deck/${id}/study`}>
+        <A class="button success" href={`/deck/${id}/study`}>
           Study
         </A>
       </div>

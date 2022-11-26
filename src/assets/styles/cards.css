@@ -1,0 +1,8 @@
+.card {
+	padding: 32px;
+	border: solid 1px var(--color-deck-card-border);
+	border-radius: 4px;
+	margin-bottom: 12px;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	text-align: center;
+}
