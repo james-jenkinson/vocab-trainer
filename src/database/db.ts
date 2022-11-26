@@ -17,7 +17,7 @@ export class VocabDB extends Dexie {
   decks!: Table<Deck>
   words!: Table<Word>
 
-  constructor () {
+  constructor() {
     super('vocabulary')
     this.version(1).stores({
       decks: '++id, name',

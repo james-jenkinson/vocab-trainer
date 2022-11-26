@@ -1,7 +1,9 @@
 import { liveQuery } from 'dexie'
 import { Accessor, createSignal, onCleanup } from 'solid-js'
 
-export const query = <T>(callback: () => Promise<T>): Accessor<T | undefined> => {
+export const query = <T>(
+  callback: () => Promise<T>
+): Accessor<T | undefined> => {
   const [signal, setSignal] = createSignal<T>()
 
   const observable = liveQuery(callback)

@@ -8,11 +8,9 @@ const StudyDeck = (): JSX.Element => {
   const { id } = useParams()
   const deckId = parseInt(id, 10)
 
-  const deck = query(
-    async () => await db.decks.get(deckId)
-  )
+  const deck = query(async () => await db.decks.get(deckId))
 
-  type WordRecord = Record<number, { word: Word, reviewed: boolean }>
+  type WordRecord = Record<number, { word: Word; reviewed: boolean }>
 
   const [wordsToRevise, setWordsToRevise] = createSignal<WordRecord>()
   const [currentWord, setCurrentWord] = createSignal<Word>()
@@ -20,10 +18,9 @@ const StudyDeck = (): JSX.Element => {
   db.words
     .where('deckId')
     .equals(deckId)
-    .and((word) =>
-      isBefore(word.dueDate, new Date())
-    )
-    .toArray().then((words) => {
+    .and((word) => isBefore(word.dueDate, new Date()))
+    .toArray()
+    .then((words) => {
       const groupedWords = words.reduce<WordRecord>((prev, next) => {
         prev[next.id as number] = {
           word: next,
@@ -58,10 +55,11 @@ const StudyDeck = (): JSX.Element => {
     const word = currentWord() as Word
     const daysToAdd = word.nextIntervalDays
 
-    db.words.update(word.id as number, {
-      dueDate: addDays(new Date(), daysToAdd),
-      nextIntervalDays: daysToAdd * intervalFactor
-    })
+    db.words
+      .update(word.id as number, {
+        dueDate: addDays(new Date(), daysToAdd),
+        nextIntervalDays: daysToAdd * intervalFactor
+      })
       .catch(console.error)
 
     const newData = wordsToRevise() as WordRecord
@@ -83,14 +81,16 @@ const StudyDeck = (): JSX.Element => {
     <main>
       <h1>Study {deck()?.name}</h1>
       <Show when={currentWord()}>
-        <div class="card">
-          {currentWord()?.word}
-        </div>
-        <button class="button" onClick={onRemembered}>Remembered</button>
-        <button class="button" onClick={onForgotten}>Forgotton</button>
+        <div class="card">{currentWord()?.word}</div>
+        <button class="button" onClick={onRemembered}>
+          Remembered
+        </button>
+        <button class="button" onClick={onForgotten}>
+          Forgotton
+        </button>
       </Show>
       <Show when={currentWord() == null && hasWords(wordsToRevise())}>
-         <p>Finished</p>
+        <p>Finished</p>
       </Show>
       <Show when={wordsToRevise() != null && !hasWords(wordsToRevise())}>
         <p>No words to study currently</p>

@@ -9,17 +9,23 @@ import './App.css'
 import StudyDeck from './views/StudyDeck'
 
 const App: Component = () => {
-  const userPrefersLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
-  const [prefersLightMode, setPrefersLightMode] = createSignal(userPrefersLightMode)
+  const userPrefersLightMode = window.matchMedia(
+    '(prefers-color-scheme: light)'
+  ).matches
+  const [prefersLightMode, setPrefersLightMode] =
+    createSignal(userPrefersLightMode)
 
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (value) => {
-    document.documentElement.removeAttribute('class')
-    setPrefersLightMode(value.matches)
-  })
+  window
+    .matchMedia('(prefers-color-scheme: light)')
+    .addEventListener('change', (value) => {
+      document.documentElement.removeAttribute('class')
+      setPrefersLightMode(value.matches)
+    })
 
   const onColorSchemeSwitch = (): void => {
     const className = prefersLightMode() ? 'dark-mode' : 'light-mode'
-    const classAlreadyPresent = document.documentElement.classList.contains(className)
+    const classAlreadyPresent =
+      document.documentElement.classList.contains(className)
 
     if (classAlreadyPresent) {
       document.documentElement.classList.remove(className)
@@ -32,21 +38,21 @@ const App: Component = () => {
     <div>
       <header>
         <nav>
-          <A href='/'>Home</A>
-          <A href='/settings'>Settings</A>
+          <A href="/">Home</A>
+          <A href="/settings">Settings</A>
         </nav>
-        <button class='color-mode-switcher' onClick={onColorSchemeSwitch}>
+        <button class="color-mode-switcher" onClick={onColorSchemeSwitch}>
           {prefersLightMode() ? 'Dark mode' : 'Light mode'}
         </button>
       </header>
       <div class="outlet">
         <Routes>
-          <Route path='/' element={Home} />
-          <Route path='/settings' element={Settings} />
-          <Route path='/deck/:id' element={DeckView} />
-          <Route path='/deck/:id/add-word' element={AddWord} />
-          <Route path='/deck/:id/study' element={StudyDeck} />
-          <Route path='/create-deck' element={CreateDeck} />
+          <Route path="/" element={Home} />
+          <Route path="/settings" element={Settings} />
+          <Route path="/deck/:id" element={DeckView} />
+          <Route path="/deck/:id/add-word" element={AddWord} />
+          <Route path="/deck/:id/study" element={StudyDeck} />
+          <Route path="/create-deck" element={CreateDeck} />
         </Routes>
       </div>
     </div>

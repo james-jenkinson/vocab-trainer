@@ -13,21 +13,25 @@ const AddWord = (): JSX.Element => {
   const onSubmit = (event: Event): void => {
     event.preventDefault()
 
-    db.words.add({
-      word: word.value,
-      dueDate: addMinutes(new Date(), defaultDueMinutes),
-      deckId: parseInt(deckId, 10),
-      nextIntervalDays: defaultNextIntervalDays
-    }).then(() => {
-      setAddedWords([word.value, ...addedWords()])
-      word.value = ''
-    }).catch(console.error)
+    db.words
+      .add({
+        word: word.value,
+        dueDate: addMinutes(new Date(), defaultDueMinutes),
+        deckId: parseInt(deckId, 10),
+        nextIntervalDays: defaultNextIntervalDays
+      })
+      .then(() => {
+        setAddedWords([word.value, ...addedWords()])
+        word.value = ''
+      })
+      .catch(console.error)
   }
 
   return (
     <main>
-
-      <A class="button narrow" href={`/deck/${deckId}`}>Back to Deck</A>
+      <A class="button narrow" href={`/deck/${deckId}`}>
+        Back to Deck
+      </A>
 
       <div class="added-words">
         <Show when={addedWords().length > 0}>

@@ -14,22 +14,24 @@ const Home = (): JSX.Element => {
   return (
     <main>
       <h1>Home</h1>
-      <ul aria-label='List of decks' class="deck-list">
-      <For each={decks()}>
-        {(deck) => (
-          <li>
-            <A
-              class="deck-card"
-              href={`/deck/${deck.id?.toString() as string}`}
-            >
-              {deck.name}
-            </A>
-          </li>
-        )}
-      </For>
+      <ul aria-label="List of decks" class="deck-list">
+        <For each={decks()}>
+          {(deck) => (
+            <li>
+              <A
+                class="deck-card"
+                href={`/deck/${deck.id?.toString() as string}`}
+              >
+                {deck.name}
+              </A>
+            </li>
+          )}
+        </For>
       </ul>
 
-      <button class="button create-button" onClick={() => onClick()}>Create default deck</button>
+      <button class="button create-button" onClick={() => onClick()}>
+        Create default deck
+      </button>
     </main>
   )
 }
