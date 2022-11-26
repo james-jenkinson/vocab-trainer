@@ -21,7 +21,7 @@ const AddWord = (): JSX.Element => {
         nextIntervalDays: defaultNextIntervalDays
       })
       .then(() => {
-        setAddedWords([word.value, ...addedWords()])
+        setAddedWords((words) => [word.value, ...words])
         word.value = ''
       })
       .catch(console.error)
