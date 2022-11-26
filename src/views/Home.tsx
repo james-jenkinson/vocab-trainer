@@ -7,10 +7,6 @@ import './Home.css'
 const Home = (): JSX.Element => {
   const decks = query(async () => await db.decks.toArray())
 
-  const onClick = (): void => {
-    db.decks.add({ name: 'Default' }).catch(console.error)
-  }
-
   return (
     <main>
       <h1>Home</h1>
@@ -29,9 +25,9 @@ const Home = (): JSX.Element => {
         </For>
       </ul>
 
-      <button class="button create-button" onClick={() => onClick()}>
-        Create default deck
-      </button>
+      <A class="button" href="/create-deck">
+        Create deck
+      </A>
     </main>
   )
 }

@@ -15,7 +15,3 @@
 	border: solid 1px var(--color-deck-card-border);
 	background-color: var(--color-button-background);
 }
-
-.create-button {
-	width: 100%;
-}
