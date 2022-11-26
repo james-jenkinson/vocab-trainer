@@ -6,9 +6,11 @@ import { defaultDueMinutes, defaultNextIntervalDays } from '../consts/schedule'
 import './AddWord.css'
 
 const AddWord = (): JSX.Element => {
-  let word!: HTMLInputElement
   const { id: deckId } = useParams()
   const [addedWords, setAddedWords] = createSignal<string[]>([])
+
+  let word!: HTMLInputElement
+  let meaning!: HTMLInputElement
 
   const onSubmit = (event: Event): void => {
     event.preventDefault()
@@ -16,6 +18,7 @@ const AddWord = (): JSX.Element => {
     db.words
       .add({
         word: word.value,
+        meaning: meaning.value,
         dueDate: addMinutes(new Date(), defaultDueMinutes),
         deckId: parseInt(deckId, 10),
         nextIntervalDays: defaultNextIntervalDays
@@ -43,6 +46,9 @@ const AddWord = (): JSX.Element => {
       <form onSubmit={onSubmit}>
         <label for="input-word-text">Word / Phrase</label>
         <input ref={word} class="input" id="input-word-text" />
+
+        <label for="input-word-meaning">Meaning</label>
+        <input ref={meaning} class="input" id="input-word-meaning" />
 
         <button class="button">Add</button>
       </form>

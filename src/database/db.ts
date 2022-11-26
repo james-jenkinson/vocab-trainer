@@ -8,6 +8,7 @@ export interface Deck {
 export interface Word {
   id?: number
   word: string
+  meaning: string
   deckId: number
   dueDate: Date
   nextIntervalDays: number
