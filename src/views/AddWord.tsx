@@ -1,4 +1,4 @@
-import { useParams } from '@solidjs/router'
+import { A, useParams } from '@solidjs/router'
 import { JSX } from 'solid-js'
 import { db } from '../database/db'
 
@@ -19,6 +19,9 @@ const AddWord = (): JSX.Element => {
 
   return (
     <main>
+
+      <A class="button narrow" href={`/deck/${deckId}`}>Back to Deck</A>
+
       <h1>Add Word</h1>
       <form onSubmit={onSubmit}>
         <label for="input-word-text">Word / Phrase</label>
