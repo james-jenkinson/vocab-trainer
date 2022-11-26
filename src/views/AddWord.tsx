@@ -2,9 +2,8 @@ import { A, useParams } from '@solidjs/router'
 import { createSignal, JSX, Show } from 'solid-js'
 import { addMinutes } from 'date-fns'
 import { db } from '../database/db'
-
+import { defaultDueMinutes, defaultNextIntervalDays } from '../consts/schedule'
 import './AddWord.css'
-import { defaultDueMinutes } from '../consts/schedule'
 
 const AddWord = (): JSX.Element => {
   let word!: HTMLInputElement
@@ -17,7 +16,8 @@ const AddWord = (): JSX.Element => {
     db.words.add({
       word: word.value,
       dueDate: addMinutes(new Date(), defaultDueMinutes),
-      deckId: parseInt(deckId, 10)
+      deckId: parseInt(deckId, 10),
+      nextIntervalDays: defaultNextIntervalDays
     }).then(() => {
       setAddedWords([word.value, ...addedWords()])
       word.value = ''

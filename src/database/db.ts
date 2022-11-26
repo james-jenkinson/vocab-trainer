@@ -9,6 +9,8 @@ export interface Word {
   id?: number
   word: string
   deckId: number
+  dueDate: Date
+  nextIntervalDays: number
 }
 
 export class VocabDB extends Dexie {
