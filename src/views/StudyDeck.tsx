@@ -1,5 +1,5 @@
 import { useParams } from '@solidjs/router'
-import { isBefore, addDays } from 'date-fns'
+import { isBefore, addDays, addHours, isToday, startOfDay } from 'date-fns'
 import { createSignal, JSX, Show } from 'solid-js'
 import { db, Word } from '../database/db'
 import { query } from '../database/query'
@@ -15,6 +15,9 @@ const StudyDeck = (): JSX.Element => {
 
   const [wordsToRevise, setWordsToRevise] = createSignal<WordRecord>()
   const [currentWord, setCurrentWord] = createSignal<Word>()
+  const [answered, setAnswered] = createSignal<{
+    userSaidTheyRememberedCorrectly: boolean
+  }>()
 
   db.words
     .where('deckId')
@@ -45,20 +48,39 @@ const StudyDeck = (): JSX.Element => {
   }
 
   const onRemembered = (): void => {
-    updateWord(2)
+    setAnswered({ userSaidTheyRememberedCorrectly: true })
   }
 
   const onForgotten = (): void => {
+    setAnswered({ userSaidTheyRememberedCorrectly: false })
+  }
+
+  const confirmRemembered = (): void => {
+    updateWord(2)
+  }
+
+  const confirmForgot = (): void => {
     updateWord(1)
   }
 
   const updateWord = (intervalFactor: number): void => {
     const word = currentWord() as Word
     const daysToAdd = word.nextIntervalDays
+    const today = new Date()
+
+    let newDate
+    newDate =
+      daysToAdd < 1
+        ? addHours(today, daysToAdd * 24)
+        : addDays(today, daysToAdd)
+
+    if (!isToday(newDate)) {
+      newDate = startOfDay(newDate)
+    }
 
     db.words
       .update(word.id as number, {
-        dueDate: addDays(new Date(), daysToAdd),
+        dueDate: newDate,
         nextIntervalDays: daysToAdd * intervalFactor
       })
       .catch(console.error)
@@ -83,14 +105,38 @@ const StudyDeck = (): JSX.Element => {
       <h1>Study {deck()?.name}</h1>
       <Show when={currentWord()}>
         <div class="card">{currentWord()?.word}</div>
-        <div class="actions">
-          <button class="button failure" onClick={onForgotten}>
-            Forgotton
-          </button>
-          <button class="button success" onClick={onRemembered}>
-            Remembered
-          </button>
-        </div>
+        <Show when={answered() == null}>
+          <div class="actions">
+            <button class="button failure" onClick={onForgotten}>
+              Forgotton
+            </button>
+            <button class="button success" onClick={onRemembered}>
+              Remembered
+            </button>
+          </div>
+        </Show>
+        <Show when={answered() != null}>
+          <p>{currentWord()?.meaning}</p>
+
+          <div class="actions">
+            <Show
+              when={!(answered()?.userSaidTheyRememberedCorrectly as boolean)}
+            >
+              <button class="button failure" onClick={confirmForgot}>
+                Continue
+              </button>
+            </Show>
+
+            <Show when={answered()?.userSaidTheyRememberedCorrectly}>
+              <button class="button failure" onClick={confirmForgot}>
+                Incorrect
+              </button>
+              <button class="button success" onClick={confirmRemembered}>
+                Correct
+              </button>
+            </Show>
+          </div>
+        </Show>
       </Show>
       <Show when={currentWord() == null && hasWords(wordsToRevise())}>
         <p>Finished</p>

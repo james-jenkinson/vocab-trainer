@@ -1,5 +1,8 @@
 .actions {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	column-gap: 8px;
+	display: flex;
+	gap: 8px;
+}
+
+.actions > * {
+	flex-grow: 1;
 }
