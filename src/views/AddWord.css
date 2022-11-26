@@ -1,0 +1,7 @@
+.added-words {
+	margin-top: 8px;
+	min-height: 22px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

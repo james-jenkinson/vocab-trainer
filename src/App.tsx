@@ -6,6 +6,7 @@ import DeckView from './views/DeckView'
 import AddWord from './views/AddWord'
 import Settings from './views/Settings'
 import './App.css'
+import StudyDeck from './views/StudyDeck'
 
 const App: Component = () => {
   const userPrefersLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
@@ -43,6 +44,7 @@ const App: Component = () => {
           <Route path='/settings' element={Settings} />
           <Route path='/deck/:id' element={DeckView} />
           <Route path='/deck/:id/add-word' element={AddWord} />
+          <Route path='/deck/:id/study' element={StudyDeck} />
           <Route path='/create-deck' element={CreateDeck} />
         </Routes>
       </div>
