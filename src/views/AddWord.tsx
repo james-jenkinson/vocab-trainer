@@ -26,6 +26,7 @@ const AddWord = (): JSX.Element => {
       .then(() => {
         setAddedWords((words) => [word.value, ...words])
         word.value = ''
+        meaning.value = ''
       })
       .catch(console.error)
   }
