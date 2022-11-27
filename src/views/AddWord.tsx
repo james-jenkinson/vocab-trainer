@@ -11,6 +11,7 @@ const AddWord = (): JSX.Element => {
 
   let word!: HTMLInputElement
   let meaning!: HTMLInputElement
+  let context!: HTMLInputElement
 
   const onSubmit = (event: Event): void => {
     event.preventDefault()
@@ -19,6 +20,7 @@ const AddWord = (): JSX.Element => {
       .add({
         word: word.value,
         meaning: meaning.value,
+        context: context.value,
         dueDate: addMinutes(new Date(), defaultDueMinutes),
         deckId: parseInt(deckId, 10),
         nextIntervalDays: defaultNextIntervalDays
@@ -27,6 +29,7 @@ const AddWord = (): JSX.Element => {
         setAddedWords((words) => [word.value, ...words])
         word.value = ''
         meaning.value = ''
+        context.value = ''
       })
       .catch(console.error)
   }
@@ -50,6 +53,9 @@ const AddWord = (): JSX.Element => {
 
         <label for="input-word-meaning">Meaning</label>
         <input ref={meaning} class="input" id="input-word-meaning" />
+
+        <label for="input-word-context">Context</label>
+        <input ref={context} class="input" id="input-word-context" />
 
         <button class="button">Add</button>
       </form>

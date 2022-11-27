@@ -7,7 +7,7 @@ button {
 }
 
 .button {
-  height: 48px;
+  min-height: 48px;
   font-size: 1.1rem;
   border-radius: 8px;
   border: solid 1px var(--color-button-border);

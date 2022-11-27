@@ -17,6 +17,8 @@ const StudyDeck = (): JSX.Element => {
   const [currentWord, setCurrentWord] = createSignal<Word>()
   const [answered, setAnswered] = createSignal<{
     userSaidTheyRememberedCorrectly: boolean
+    requiredContext?: boolean
+    forgotWithContext?: boolean
   }>()
 
   db.words
@@ -55,8 +57,23 @@ const StudyDeck = (): JSX.Element => {
     setAnswered({ userSaidTheyRememberedCorrectly: false })
   }
 
+  const onRememberedWithContext = (): void => {
+    setAnswered({
+      userSaidTheyRememberedCorrectly: true,
+      requiredContext: true
+    })
+  }
+
+  const onForgotWithContext = (): void => {
+    setAnswered({
+      userSaidTheyRememberedCorrectly: false,
+      forgotWithContext: true
+    })
+  }
+
   const confirmRemembered = (): void => {
-    updateWord(2)
+    const requiredContext = answered()?.requiredContext === true
+    updateWord(requiredContext ? 1.1 : 2)
   }
 
   const confirmForgot = (): void => {
@@ -91,6 +108,7 @@ const StudyDeck = (): JSX.Element => {
     setWordsToRevise(newData)
 
     setCurrentWord(randomWord(newData))
+    setAnswered(undefined)
   }
 
   const hasWords = (words: WordRecord | undefined): boolean => {
@@ -98,6 +116,15 @@ const StudyDeck = (): JSX.Element => {
       return true
     }
     return Object.values(words).length > 0
+  }
+
+  const showContext = (): boolean => {
+    if (answered()?.forgotWithContext === true) {
+      return false
+    }
+
+    const word = currentWord()
+    return word?.context != null && word.context !== ''
   }
 
   return (
@@ -115,27 +142,51 @@ const StudyDeck = (): JSX.Element => {
             </button>
           </div>
         </Show>
+
         <Show when={answered() != null}>
-          <p>{currentWord()?.meaning}</p>
+          <Show
+            when={!(answered()?.userSaidTheyRememberedCorrectly as boolean)}
+          >
+            {showContext() && (
+              <>
+                <div class="actions">
+                  <button class="button failure" onClick={onForgotWithContext}>
+                    Still can't recall
+                  </button>
+                  <button
+                    class="button success"
+                    onClick={onRememberedWithContext}
+                  >
+                    Remembered with context
+                  </button>
+                </div>
+              </>
+            )}
+            {!showContext() && (
+              <>
+                <p class="answer">{currentWord()?.meaning}</p>
 
-          <div class="actions">
-            <Show
-              when={!(answered()?.userSaidTheyRememberedCorrectly as boolean)}
-            >
-              <button class="button failure" onClick={confirmForgot}>
-                Continue
-              </button>
-            </Show>
+                <div class="actions">
+                  <button class="button failure" onClick={confirmForgot}>
+                    Continue
+                  </button>
+                </div>
+              </>
+            )}
+          </Show>
 
-            <Show when={answered()?.userSaidTheyRememberedCorrectly}>
+          <Show when={answered()?.userSaidTheyRememberedCorrectly}>
+            <p class="answer">{currentWord()?.meaning}</p>
+
+            <div class="actions">
               <button class="button failure" onClick={confirmForgot}>
                 Incorrect
               </button>
               <button class="button success" onClick={confirmRemembered}>
                 Correct
               </button>
-            </Show>
-          </div>
+            </div>
+          </Show>
         </Show>
       </Show>
       <Show when={currentWord() == null && hasWords(wordsToRevise())}>

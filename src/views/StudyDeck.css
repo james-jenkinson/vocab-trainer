@@ -3,6 +3,11 @@
 	gap: 8px;
 }
 
+.answer {
+	text-align: center;
+	font-size: 1.5rem;
+}
+
 .actions > * {
 	flex-grow: 1;
 }
