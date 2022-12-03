@@ -1,3 +1,10 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+	align-items: center;
+}
+
 .actions {
 	display: flex;
 	gap: 8px;
@@ -9,5 +16,5 @@
 }
 
 .actions > * {
-	flex-grow: 1;
+	flex: 1;
 }

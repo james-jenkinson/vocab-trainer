@@ -3,33 +3,25 @@ import { createSignal, JSX, Show } from 'solid-js'
 import { addMinutes } from 'date-fns'
 import { db } from '../database/db'
 import { defaultDueMinutes, defaultNextIntervalDays } from '../consts/schedule'
+import WordForm, { FormData } from '../components/WordForm'
 import './AddWord.css'
 
 const AddWord = (): JSX.Element => {
   const { id: deckId } = useParams()
   const [addedWords, setAddedWords] = createSignal<string[]>([])
 
-  let word!: HTMLInputElement
-  let meaning!: HTMLInputElement
-  let context!: HTMLInputElement
-
-  const onSubmit = (event: Event): void => {
-    event.preventDefault()
-
+  const onSubmit = (data: FormData): void => {
     db.words
       .add({
-        word: word.value,
-        meaning: meaning.value,
-        context: context.value,
+        word: data.word,
+        meaning: data.meaning,
+        context: data.context,
         dueDate: addMinutes(new Date(), defaultDueMinutes),
         deckId: parseInt(deckId, 10),
         nextIntervalDays: defaultNextIntervalDays
       })
       .then(() => {
-        setAddedWords((words) => [word.value, ...words])
-        word.value = ''
-        meaning.value = ''
-        context.value = ''
+        setAddedWords((words) => [data.word, ...words])
       })
       .catch(console.error)
   }
@@ -47,18 +39,7 @@ const AddWord = (): JSX.Element => {
       </div>
 
       <h1>Add Word</h1>
-      <form onSubmit={onSubmit}>
-        <label for="input-word-text">Word / Phrase</label>
-        <input ref={word} class="input" id="input-word-text" />
-
-        <label for="input-word-meaning">Meaning</label>
-        <input ref={meaning} class="input" id="input-word-meaning" />
-
-        <label for="input-word-context">Context</label>
-        <input ref={context} class="input" id="input-word-context" />
-
-        <button class="button">Add</button>
-      </form>
+      <WordForm onSubmit={onSubmit} submitText="Add" resetForm={true} />
     </main>
   )
 }

@@ -1,4 +1,4 @@
-import { useParams } from '@solidjs/router'
+import { A, useParams, useSearchParams } from '@solidjs/router'
 import { isBefore, addDays, addHours, isToday, startOfDay } from 'date-fns'
 import { createSignal, JSX, Show } from 'solid-js'
 import { db, Word } from '../database/db'
@@ -7,6 +7,8 @@ import './StudyDeck.css'
 
 const StudyDeck = (): JSX.Element => {
   const { id } = useParams()
+  const [{ word }] = useSearchParams()
+  const defaultWordId = parseInt(word, 10)
   const deckId = parseInt(id, 10)
 
   const deck = query(async () => await db.decks.get(deckId))
@@ -24,7 +26,7 @@ const StudyDeck = (): JSX.Element => {
   db.words
     .where('deckId')
     .equals(deckId)
-    .and((word) => isBefore(word.dueDate, new Date()))
+    .and((word) => isBefore(new Date(0), new Date()))
     .toArray()
     .then((words) => {
       const groupedWords = words.reduce<WordRecord>((prev, next) => {
@@ -35,6 +37,13 @@ const StudyDeck = (): JSX.Element => {
         return prev
       }, {})
       setWordsToRevise(groupedWords)
+
+      const shouldSelectStartingWord =
+        word != null && word !== '' && groupedWords[parseInt(word, 10)] != null
+      if (shouldSelectStartingWord) {
+        setCurrentWord(groupedWords[defaultWordId].word)
+      }
+
       setCurrentWord(randomWord(groupedWords))
     })
     .catch(console.error)
@@ -127,9 +136,19 @@ const StudyDeck = (): JSX.Element => {
     return word?.context != null && word.context !== ''
   }
 
+  const editLink = (wordId: number): string =>
+    `/edit-word/${wordId}?returnTo=/deck/${deckId}/study?word=${wordId}`
+
   return (
     <main>
-      <h1>Study {deck()?.name}</h1>
+      <div class="header">
+        <h1>Study {deck()?.name}</h1>
+        <Show when={currentWord()}>
+          <A class="button narrow" href={editLink(currentWord()?.id as number)}>
+            Edit
+          </A>
+        </Show>
+      </div>
       <Show when={currentWord()}>
         <div class="card">{currentWord()?.word}</div>
         <Show when={answered() == null}>

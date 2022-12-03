@@ -7,6 +7,7 @@ import AddWord from './views/AddWord'
 import Settings from './views/Settings'
 import './App.css'
 import StudyDeck from './views/StudyDeck'
+import EditWord from './views/EditWord'
 
 const App: Component = () => {
   const userPrefersLightMode = window.matchMedia(
@@ -52,6 +53,7 @@ const App: Component = () => {
           <Route path="/deck/:id" element={DeckView} />
           <Route path="/deck/:id/add-word" element={AddWord} />
           <Route path="/deck/:id/study" element={StudyDeck} />
+          <Route path="/edit-word/:id" element={EditWord} />
           <Route path="/create-deck" element={CreateDeck} />
         </Routes>
       </div>
