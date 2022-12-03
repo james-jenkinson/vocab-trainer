@@ -149,6 +149,7 @@ const StudyDeck = (): JSX.Element => {
           >
             {showContext() && (
               <>
+                <div class="card">{currentWord()?.context}</div>
                 <div class="actions">
                   <button class="button failure" onClick={onForgotWithContext}>
                     Still can't recall
