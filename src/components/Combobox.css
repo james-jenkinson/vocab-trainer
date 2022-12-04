@@ -21,6 +21,7 @@
 
 .combobox-list-item {
 	padding: 8px;
+	cursor: pointer;
 }
 
 .combobox-list-item.highlight {

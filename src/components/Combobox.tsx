@@ -135,6 +135,23 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
   const suggestionId = (id: T): string =>
     `${comboboxId}-suggestion-id-${JSON.stringify(id)}`
 
+  const selectItem = (id: T, event: Event): void => {
+    if (props.onEnter == null) return
+
+    const item = props.suggestions.find((item) => item.id === id)
+    if (item == null) return
+
+    props.onEnter(
+      Object.assign(event, {
+        label: item.label,
+        fromSuggestionList: true,
+        id
+      })
+    )
+    input.value = ''
+    setShowList(false)
+  }
+
   return (
     <span ref={container} class="combobox-container">
       <input
@@ -164,6 +181,7 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
           {(suggestion) => (
             <li
               class="combobox-list-item"
+              onClick={(e) => selectItem(suggestion.id, e)}
               id={suggestionId(suggestion.id)}
               role="option"
               aria-selected={highlightedSuggestion()?.id === suggestion.id}
