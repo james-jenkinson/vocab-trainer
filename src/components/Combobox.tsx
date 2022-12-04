@@ -10,8 +10,10 @@ export interface EnterPayload<T> {
 
 interface Props<T> {
   id?: string
+  ref: HTMLInputElement
   suggestions: Array<{ label: string; id: T }>
   listLabel: string
+  inputRef?: HTMLInputElement
   onInput?: (event: Event) => void
   onEnter?: (event: Event & EnterPayload<T>) => void
 }
@@ -20,7 +22,13 @@ const id = uniqueId('combobox')
 
 const Combobox = <T,>(props: Props<T>): JSX.Element => {
   let container!: HTMLElement
-  let input!: HTMLInputElement
+  // const input: HTMLInputElement = props.inputRef as HTMLInputElement
+  // let input!: HTMLInputElement
+  /*
+  createEffect(() => {
+    input = props.inputRef as HTMLInputElement
+  })
+  */
   let suggestionList!: HTMLUListElement
   const [highlightedSuggestion, setHighlightedSuggestion] = createSignal<{
     index: number
@@ -29,6 +37,8 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
   const [showList, setShowList] = createSignal(false)
 
   const comboboxId = id()
+
+  const inputId = (): string => props.id ?? `${comboboxId}-input`
 
   const onPointerUp = (event: Event): void => {
     if (container.contains(event.target as HTMLElement)) {
@@ -73,6 +83,7 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
   }
 
   const onInputKeyDown = (event: KeyboardEvent): void => {
+    const target = event.target as HTMLInputElement
     switch (event.key) {
       case 'Enter': {
         if (props.onEnter == null) {
@@ -84,7 +95,7 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
           ? props.suggestions[suggestion.index]
           : undefined
 
-        const label = chosenItem != null ? chosenItem.label : input.value
+        const label = chosenItem != null ? chosenItem.label : target.value
 
         if (chosenItem == null) {
           chosenItem = props.suggestions.find(
@@ -99,7 +110,7 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
             id: chosenItem?.id
           })
         )
-        input.value = ''
+        target.value = ''
         setShowList(false)
         break
       }
@@ -121,6 +132,9 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
         setShowList(false)
         break
       }
+
+      default:
+        setShowList(true)
     }
 
     setHighlightedSuggestion()
@@ -137,6 +151,8 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
 
   const selectItem = (id: T, event: Event): void => {
     if (props.onEnter == null) return
+
+    const input = document.getElementById(inputId()) as HTMLInputElement
 
     const item = props.suggestions.find((item) => item.id === id)
     if (item == null) return
@@ -155,8 +171,8 @@ const Combobox = <T,>(props: Props<T>): JSX.Element => {
   return (
     <span ref={container} class="combobox-container">
       <input
-        ref={input}
-        id={props.id}
+        ref={props.ref}
+        id={inputId()}
         class="input"
         onInput={onInput}
         onKeyDown={onInputKeyDown}

@@ -36,6 +36,7 @@ const WordForm = (props: Props): JSX.Element => {
   let word!: HTMLInputElement
   let meaning!: HTMLInputElement
   let context!: HTMLInputElement
+  let newConnection!: HTMLInputElement
 
   const [connections, setConnections] = createSignal<Connection[]>(
     props.defaultData?.connections ?? []
@@ -101,6 +102,22 @@ const WordForm = (props: Props): JSX.Element => {
     ])
   }
 
+  const addConnectionFromButton = (): void => {
+    const value = newConnection?.value
+    if (value === '') return
+
+    const existingValue = words()?.find((word) => word.word === value)
+
+    setConnections((connections) => [
+      ...connections,
+      {
+        word: existingValue?.word ?? newConnection.value,
+        wordId: existingValue?.id ?? id(),
+        isExisting: existingValue != null
+      }
+    ])
+  }
+
   const onChange = (event: Event): void => {
     const target = event.target as HTMLInputElement
 
@@ -145,13 +162,19 @@ const WordForm = (props: Props): JSX.Element => {
       />
 
       <label for="input-word-new-connection">Add connection</label>
-      <Combobox
-        id="input-word-new-connection"
-        suggestions={filteredWords() ?? []}
-        listLabel="Previous words you have saved"
-        onInput={onChange}
-        onEnter={addConnection}
-      />
+      <div class="input-word-new-connection-container">
+        <Combobox
+          id="input-word-new-connection"
+          ref={newConnection}
+          suggestions={filteredWords() ?? []}
+          listLabel="Previous words you have saved"
+          onInput={onChange}
+          onEnter={addConnection}
+        />
+        <button class="button" type="button" onClick={addConnectionFromButton}>
+          +
+        </button>
+      </div>
 
       <ul aria-live="polite">
         <For each={connections()}>
