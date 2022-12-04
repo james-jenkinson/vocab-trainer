@@ -1,0 +1,10 @@
+.connection-indicator {
+	display: flex;
+	align-items: center;
+	padding: 4px;
+}
+
+.connection-indicator button {
+	height: 40px;
+	width: 40px;
+}

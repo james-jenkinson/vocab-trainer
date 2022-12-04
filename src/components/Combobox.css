@@ -1,0 +1,28 @@
+.combobox-container {
+	position: relative;
+	display: block;
+}
+
+.combobox-list {
+	position: absolute;
+	max-height: 200px;
+	width: 100%;
+	background-color: var(--color-background-soft);
+	margin-top: -16px;
+	border: solid 1px var(--color-border);
+
+	overflow: hidden scroll;
+	display: none;
+}
+
+.combobox-list.display {
+	display: block;
+}
+
+.combobox-list-item {
+	padding: 8px;
+}
+
+.combobox-list-item.highlight {
+	outline: auto;
+}

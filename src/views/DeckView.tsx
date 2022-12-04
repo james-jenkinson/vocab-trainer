@@ -11,14 +11,13 @@ const DeckView = (): JSX.Element => {
 
   const deck = query(async () => await db.decks.get(parseInt(id, 10)))
   const wordCount = query(
-    async () => await db.words.where('deckId').equals(deckId).count()
+    async () => await db.words.where({ deckId, isDraft: 0 }).count()
   )
 
   const dueCount = query(
     async () =>
       await db.words
-        .where('deckId')
-        .equals(deckId)
+        .where({ deckId, isDraft: 0 })
         .and((word) => isBefore(word.dueDate, new Date()))
         .count()
   )

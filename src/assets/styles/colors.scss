@@ -1,5 +1,6 @@
 @mixin light-mode {
 	--color-background: #ffffff;
+	--color-background-soft: #dfe0e0;
 	--color-text: #000000;
 	--color-border: #959595;
 
@@ -18,6 +19,7 @@
 
 @mixin dark-mode {
 	--color-background: #2c2c2c;	
+	--color-background-soft: #393b43;
 	--color-text: #ffffff;
 	--color-border: #7c7c7c;
 

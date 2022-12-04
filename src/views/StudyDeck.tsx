@@ -24,9 +24,8 @@ const StudyDeck = (): JSX.Element => {
   }>()
 
   db.words
-    .where('deckId')
-    .equals(deckId)
-    .and((word) => isBefore(new Date(0), new Date()))
+    .where({ deckId, isDraft: 0 })
+    .and((word) => isBefore(word.dueDate, new Date()))
     .toArray()
     .then((words) => {
       const groupedWords = words.reduce<WordRecord>((prev, next) => {

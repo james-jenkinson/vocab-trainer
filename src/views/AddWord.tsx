@@ -7,19 +7,54 @@ import WordForm, { FormData } from '../components/WordForm'
 import './AddWord.css'
 
 const AddWord = (): JSX.Element => {
-  const { id: deckId } = useParams()
+  const { id } = useParams()
+  const deckId = parseInt(id, 10)
   const [addedWords, setAddedWords] = createSignal<string[]>([])
 
   const onSubmit = (data: FormData): void => {
-    db.words
-      .add({
+    db.transaction('rw', db.words, db.wordConnections, async () => {
+      const newIds = await Promise.all(
+        data.connections
+          .filter((connection) => !connection.isExisting)
+          .map(
+            async (connection) =>
+              await db.words.add({
+                word: connection.word,
+                meaning: '',
+                context: '',
+                dueDate: new Date(),
+                deckId,
+                isDraft: 1,
+                nextIntervalDays: defaultNextIntervalDays
+              })
+          )
+      )
+      const existingIds = data.connections
+        .filter((connection) => connection.isExisting)
+        .map((connection) => connection.wordId)
+
+      const allIds = [...newIds, ...existingIds]
+
+      const newWordId = await db.words.add({
         word: data.word,
         meaning: data.meaning,
         context: data.context,
         dueDate: addMinutes(new Date(), defaultDueMinutes),
-        deckId: parseInt(deckId, 10),
+        deckId,
+        isDraft: 0,
         nextIntervalDays: defaultNextIntervalDays
       })
+
+      await Promise.all(
+        allIds.map(
+          async (id) =>
+            await db.wordConnections.add({
+              wordId: newWordId as number,
+              connectionWordId: id as number
+            })
+        )
+      )
+    })
       .then(() => {
         setAddedWords((words) => [data.word, ...words])
       })
@@ -39,7 +74,12 @@ const AddWord = (): JSX.Element => {
       </div>
 
       <h1>Add Word</h1>
-      <WordForm onSubmit={onSubmit} submitText="Add" resetForm={true} />
+      <WordForm
+        deckId={deckId}
+        onSubmit={onSubmit}
+        submitText="Add"
+        resetForm={true}
+      />
     </main>
   )
 }

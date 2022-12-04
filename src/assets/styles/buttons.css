@@ -4,6 +4,8 @@ button {
 	font-size: 1rem;
   color: var(--color-button-text);
 	text-decoration: none;
+	background-color: transparent;
+	border: none;
 }
 
 .button {
