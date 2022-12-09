@@ -5,9 +5,10 @@ import CreateDeck from './views/CreateDeck'
 import DeckView from './views/DeckView'
 import AddWord from './views/AddWord'
 import Settings from './views/Settings'
-import './App.css'
 import StudyDeck from './views/StudyDeck'
 import EditWord from './views/EditWord'
+import ConnectionTypes from './views/ConnectionTypes'
+import './App.css'
 
 const App: Component = () => {
   const userPrefersLightMode = window.matchMedia(
@@ -50,6 +51,7 @@ const App: Component = () => {
         <Routes>
           <Route path="/" element={Home} />
           <Route path="/settings" element={Settings} />
+          <Route path="/connection-types" element={ConnectionTypes} />
           <Route path="/deck/:id" element={DeckView} />
           <Route path="/deck/:id/add-word" element={AddWord} />
           <Route path="/deck/:id/study" element={StudyDeck} />
